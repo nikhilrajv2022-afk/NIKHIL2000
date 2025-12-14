@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>Class Test Marks</h1>
+    <p class="text-muted">Enter marks for the recent Class Test.</p>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+    {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<form method="POST">
+    <div class="card">
+        <div style="margin-bottom: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Exam / Test Name</label>
+                <input type="text" placeholder="e.g. Unit Test 1" required>
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Subject</label>
+                <input type="text" placeholder="e.g. Mathematics" required>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Marks Obtained</th>
+                    <th>Total Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>#{{ student.id }}</td>
+                    <td style="font-weight: 500;">{{ student.name }}</td>
+                    <td>
+                        {% if role == 'admin' %}
+                        <input type="number" name="marks_{{ student.id }}" placeholder="0"
+                            style="width: 80px; margin-bottom: 0;" min="0" max="100">
+                        {% else %}
+                        <strong>85</strong> <span class="text-muted">/ 100</span>
+                        {% endif %}
+                    </td>
+                    <td>100</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if role == 'admin' %}
+        <div style="margin-top: 2rem; text-align: right;">
+            <button type="submit" class="btn btn-primary">Upload Marks</button>
+        </div>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

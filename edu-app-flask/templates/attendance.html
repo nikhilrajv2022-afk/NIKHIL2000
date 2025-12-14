@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>Attendance Tracking</h1>
+    <p class="text-muted">Mark attendance for today: <strong>{{ '2024-12-14' }}</strong></p>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+    {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<form method="POST">
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Current Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>#{{ student.id }}</td>
+                    <td style="font-weight: 500;">{{ student.name }}</td>
+                    <td>
+                        <span class="status-badge status-{{ student.status }}">
+                            {{ student.status }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if role == 'admin' %}
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="checkbox" name="attendance_{{ student.id }}" {% if student.status=='Present'
+                                %}checked{% endif %}>
+                            Present
+                        </label>
+                        {% else %}
+                        <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if role == 'admin' %}
+        <div style="margin-top: 2rem; text-align: right;">
+            <button type="submit" class="btn btn-primary">Save Attendance</button>
+        </div>
+        {% endif %}
+    </div>
+</form>
+{% endblock %}

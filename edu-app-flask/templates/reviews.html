@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <h1>Parents Reviews</h1>
+    <p class="text-muted">We value your feedback. Read what others are saying.</p>
+</div>
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+    {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="row" style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+    <!-- Submission Form -->
+    <div class="card" style="height: fit-content;">
+        <h2>Write a Review</h2>
+        <form method="POST">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Parent Name</label>
+                <input type="text" name="parent_name" placeholder="Your Name" required>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Rating</label>
+                <select name="rating"
+                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                    <option value="4">⭐⭐⭐⭐ (Good)</option>
+                    <option value="3">⭐⭐⭐ (Average)</option>
+                    <option value="2">⭐⭐ (Fair)</option>
+                    <option value="1">⭐ (Poor)</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Comment</label>
+                <textarea name="comment" rows="4"
+                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0; font-family: inherit;"
+                    required placeholder="Share your experience..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Review</button>
+        </form>
+    </div>
+
+    <!-- Reviews Grid -->
+    <div style="display: grid; gap: 1rem;">
+        {% for review in reviews %}
+        <div class="card glass" style="border-left: 4px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                <h3 style="margin: 0;">{{ review.parent }}</h3>
+                <div style="color: #f59e0b;">
+                    {% for _ in range(review.rating) %}⭐{% endfor %}
+                </div>
+            </div>
+            <p style="color: var(--text-muted); line-height: 1.5;">"{{ review.comment }}"</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

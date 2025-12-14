@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h1>Fees Structure</h1>
+        <p class="text-muted">Review student fee records and statuses.</p>
+    </div>
+    {% if role == 'admin' %}
+    <button class="btn btn-primary">Add New Record</button>
+    {% endif %}
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Term Name</th>
+                <th>Due Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fee in fees %}
+            <tr>
+                <td>#{{ fee.id }}</td>
+                <td style="font-weight: 500;">{{ fee.term }}</td>
+                <td>{{ fee.due_date }}</td>
+                <td>${{ fee.amount }}</td>
+                <td>
+                    <span class="status-badge status-{{ fee.status }}">
+                        {{ fee.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

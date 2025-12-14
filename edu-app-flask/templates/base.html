@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRI SAI VIDYA PEETHAM - Premium Education</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#6366f1">
+</head>
+
+<body>
+    {% if request.endpoint != 'login' %}
+    <div class="container">
+        <nav class="navbar glass">
+            <a href="{{ url_for('dashboard') }}" class="logo">
+                SRI SAI VIDYA PEETHAM
+                <span
+                    style="font-size: 0.8rem; background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; vertical-align: middle;">
+                    {{ session['role']|upper if session.get('role') else 'GUEST' }}
+                </span>
+            </a>
+            <div class="nav-links">
+                <a href="{{ url_for('dashboard') }}"
+                    class="{{ 'active' if request.endpoint == 'dashboard' else '' }}">Dashboard</a>
+                <a href="{{ url_for('fees') }}" class="{{ 'active' if request.endpoint == 'fees' else '' }}">Fees</a>
+                <a href="{{ url_for('attendance') }}"
+                    class="{{ 'active' if request.endpoint == 'attendance' else '' }}">Attendance</a>
+                <a href="{{ url_for('marks') }}" class="{{ 'active' if request.endpoint == 'marks' else '' }}">Marks</a>
+                <a href="{{ url_for('reviews') }}"
+                    class="{{ 'active' if request.endpoint == 'reviews' else '' }}">Reviews</a>
+                <a href="{{ url_for('communication') }}"
+                    class="{{ 'active' if request.endpoint == 'communication' else '' }}">Contact</a>
+                <a href="{{ url_for('login') }}">Logout</a>
+            </div>
+        </nav>
+    </div>
+    {% endif %}
+
+    <div class="content">
+        <div style="text-align: right; margin-bottom: 1rem;">
+            <button id="installBtn" onclick="installApp()" class="btn btn-primary"
+                style="display: none; background: #000; color: #fff;">
+                📲 Install App
+            </button>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/pwa.js') }}"></script>
+</body>
+
+</html>
